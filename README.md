@@ -7,6 +7,7 @@
 | [Demo 1](#demo-1) | Create a basic .NET Core console app and generate a script | .NET Core |
 | [Demo 2](#demo-2) | Run demo 1 in headless mode | .NET Core |
 | [Demo 3](#demo-3) | Rerecord navigation but with Trace enabled | .NET Core |
+| [Demo 4](#demo-4) | Azure Functions App Linux Consumption provisioned using the AZ Developer CLI (AZD) | NodeJS (Linux consumption Functions App), Razor Pages in ASP.NET Core |
 
 ---
 ## Demo 1
@@ -95,3 +96,24 @@ pwsh .\bin\Debug\net6.0\playwright.ps1 show-trace .\trace.zip
 Example Trace:
 
 ![](./assets/2023-09-09-19-41-39.png)
+
+---
+
+
+## Demo 4
+
+Azure Functions App Linux Consumption provisioned using the AZ Developer CLI (AZD)
+
+Click [here](https://github.com/garrardkitchen/playwright-nodejs-func) to go to GitHub repo and follow instructions.
+
+```
+# Log in to azd. Only required once per-install.
+azd auth logout # avoid any expired refresh tokens; you'll experience multiple auth challenges and a broken DX otherwise
+azd auth login
+
+# First-time project setup. Initialize a project in the current directory, using this template. 
+azd init --environment "<env-name>" --template https://github.com/garrardkitchen/playwright-nodejs-func
+
+# Provision and deploy to Azure
+azd up
+```

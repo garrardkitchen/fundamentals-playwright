@@ -9,6 +9,9 @@
 | [Demo 3](#demo-3) | The Inspector | .NET Core |
 | [Demo 3](#demo-3) | Trace | .NET Core |
 | [Demo 5](#demo-5) | Azure Functions App Linux Consumption provisioned using the AZ Developer CLI (AZD) | NodeJS (Linux consumption Functions App), Razor Pages in ASP.NET Core |
+| [Code Snippets](#code-snippets) | Short code snippets | NodeJS, .NET Core |
+
+
 
 ---
 
@@ -98,6 +101,7 @@ pwsh .\bin\Debug\net6.0\playwright.ps1 codegen https://www.google.com/ -o ./Prog
 ```
 
 👆 Note that only firefox engines is installed
+
 👆 Must press the **record** button
 
 To see what you navigated - headed mode:
@@ -121,6 +125,8 @@ dotnet run
 ---
 
 ## Demo 4
+
+**Trace**
 
 To see the trace
 
@@ -197,18 +203,26 @@ azd up
 This snippet sets a timeout of 3 mins, disables the gpu and ignores all HTTPS related errors. This latter context configuration is helpful when running from a container.
 
 ```c#
-using var playwright = await Playwright.CreateAsync();
-await using var browser = await playwright.Firefox.LaunchAsync(new BrowserTypeLaunchOptions{
-    Headless = true,
-    Timeout = (1000 * 180),
-    Args = new string[] {"--disable-gpu"}
-});
-var context = await browser.NewContextAsync(new BrowserNewContextOptions{
-    IgnoreHTTPSErrors = true
-});
-var page = await context.NewPageAsync();
-await page.GotoAsync("https://google.com");
-var content = await page.ContentAsync();
-bool isGooglePresent = content.Contains("google", StringComparison.OrdinalIgnoreCase);
-Console.WriteLine($"Is 'google' present on the page? {isGooglePresent}");
+using Microsoft.Playwright;
+
+class Program
+{
+    static async Task Main(string[] args)
+    {
+        using var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Firefox.LaunchAsync(new BrowserTypeLaunchOptions{
+            Headless = true,
+            Timeout = (1000 * 180),
+            Args = new string[] {"--disable-gpu"}
+        });
+        var context = await browser.NewContextAsync(new BrowserNewContextOptions{
+            IgnoreHTTPSErrors = true
+        });
+        var page = await context.NewPageAsync();
+        await page.GotoAsync("https://google.com");
+        var content = await page.ContentAsync();
+        bool isGooglePresent = content.Contains("google", StringComparison.OrdinalIgnoreCase);
+        Console.WriteLine($"Is 'google' present on the page? {isGooglePresent}");
+    }
+}
 ```

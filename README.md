@@ -4,10 +4,11 @@
 
 | Demo | Summary | Runtime |
 | :- | :- | :- |
-| [Demo 1](#demo-1) | Create a basic .NET Core console app and generate a script | .NET Core |
-| [Demo 2](#demo-2) | Run demo 1 in headless mode | .NET Core |
-| [Demo 3](#demo-3) | Rerecord navigation but with Trace enabled | .NET Core |
-| [Demo 4](#demo-4) | Azure Functions App Linux Consumption provisioned using the AZ Developer CLI (AZD) | NodeJS (Linux consumption Functions App), Razor Pages in ASP.NET Core |
+| [Demo 1](#demo-1) | Create a basic .NET Core console app and use script generated from OpenAI | .NET Core |
+| [Demo 2](#demo-2) | Record automation | .NET Core |
+| [Demo 3](#demo-3) | The Inspector | .NET Core |
+| [Demo 3](#demo-3) | Trace | .NET Core |
+| [Demo 5](#demo-5) | Azure Functions App Linux Consumption provisioned using the AZ Developer CLI (AZD) | NodeJS (Linux consumption Functions App), Razor Pages in ASP.NET Core |
 
 ---
 

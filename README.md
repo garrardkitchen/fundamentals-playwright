@@ -10,45 +10,116 @@
 | [Demo 4](#demo-4) | Azure Functions App Linux Consumption provisioned using the AZ Developer CLI (AZD) | NodeJS (Linux consumption Functions App), Razor Pages in ASP.NET Core |
 
 ---
+
 ## Demo 1
 
+**Introduction**
+
 ```powershell
-mkdir src/demo-csharp
-cd src/demo-csharp
+mkdir src/demo-1
+cd src/demo-1
 dotnet new console -f net6.0
-dotnet add package Microsoft.Playwright --version 1.37.1
+dotnet add package Microsoft.Playwright --version 1.38.0
 dotnet build
-pwsh .\bin\Debug\net6.0\playwright.ps1 codegen https://www.google.com/ -o ./Program.cs
+pwsh .\bin\Debug\net6.0\playwright.ps1 install
 ```
+
+👆 Note that all engines (chromium, firefox & webkit) are installed
+
+**OpenAI prompt**: "Create me c# script using ms playwright to confirm the word google is on the page having navigated to google.com"
+
+```c#
+using Microsoft.Playwright;
+
+class Program
+{
+    static async Task Main(string[] args)
+    {
+        using var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Firefox.LaunchAsync();
+        var page = await browser.NewPageAsync();
+        await page.GotoAsync("https://google.com");
+        var content = await page.ContentAsync();
+        bool isGooglePresent = content.Contains("google", StringComparison.OrdinalIgnoreCase);
+        Console.WriteLine($"Is 'google' present on the page? {isGooglePresent}");
+    }
+}
+```
+
+```powershell
+dotnet run
+```
+
+**OpenAI prompt**: "I'd like this script to not be headless" 
+
+```c#
+using Microsoft.Playwright;
+
+class Program
+{
+    static async Task Main(string[] args)
+    {
+        using var playwright = await Playwright.CreateAsync();
+        await using var browser = await playwright.Firefox.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false });
+        var page = await browser.NewPageAsync();
+        await page.GotoAsync("https://google.com");
+        var content = await page.ContentAsync();
+        bool isGooglePresent = content.Contains("google", StringComparison.OrdinalIgnoreCase);
+        Console.WriteLine($"Is 'google' present on the page? {isGooglePresent}");
+    }
+}
+```
+
+## Demo 2
+
+**Record automation**
+
+To save file, you need administrators rights:
+
+Open up Powershell Terminal as Administrator, then:
+
+```powershell
+net localgroup administrators <username> /add
+```
+
+Next, open up Windows Terminal as Administrator.  You'll still get prompt but use your non-admin account to sign in.  
+
+Then:
+
+```powershell
+mkdir src/demo-2
+cd src/demo-2
+dotnet new console -f net6.0
+dotnet add package Microsoft.Playwright --version 1.38.0
+dotnet build
+pwsh .\bin\Debug\net6.0\playwright.ps1 install --with-deps firefox
+pwsh .\bin\Debug\net6.0\playwright.ps1 codegen https://www.google.com/ -o ./Program.cs -b firefox
+```
+
+👆 Note that only firefox engines is installed
+👆 Must press the **record** button
 
 To see what you navigated - headed mode:
 ```
 dotnet run
 ```
 
----
-
-## Demo 2
-
-To see it run in headless mode:
-
-Step 1 - set the `Headless` property to true:
-
-```csharp
-public static async Task Main()
-{
-    using var playwright = await Playwright.CreateAsync();
-    await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
-    {
-        Headless = false,
-    });
-```
-
-Step 2 - `dotnet run`
-
----
 
 ## Demo 3
+
+**Playwright Inspector**
+
+Your scripts might not run.  You can invoke the PW Inspector to help identify issues in your scripts.
+
+```powershell
+$env:PWDEBUG=1
+dotnet run
+```
+
+
+---
+
+## Demo 4
 
 To see the trace
 
@@ -100,7 +171,7 @@ Example Trace:
 ---
 
 
-## Demo 4
+## Demo 5
 
 Azure Functions App Linux Consumption provisioned using the AZ Developer CLI (AZD)
 
@@ -116,4 +187,27 @@ azd init --environment "<env-name>" --template https://github.com/garrardkitchen
 
 # Provision and deploy to Azure
 azd up
+```
+
+# Code snippets
+
+## Launch Options
+
+This snippet sets a timeout of 3 mins, disables the gpu and ignores all HTTPS related errors. This latter context configuration is helpful when running from a container.
+
+```c#
+using var playwright = await Playwright.CreateAsync();
+await using var browser = await playwright.Firefox.LaunchAsync(new BrowserTypeLaunchOptions{
+    Headless = true,
+    Timeout = (1000 * 180),
+    Args = new string[] {"--disable-gpu"}
+});
+var context = await browser.NewContextAsync(new BrowserNewContextOptions{
+    IgnoreHTTPSErrors = true
+});
+var page = await context.NewPageAsync();
+await page.GotoAsync("https://google.com");
+var content = await page.ContentAsync();
+bool isGooglePresent = content.Contains("google", StringComparison.OrdinalIgnoreCase);
+Console.WriteLine($"Is 'google' present on the page? {isGooglePresent}");
 ```

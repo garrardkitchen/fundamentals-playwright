@@ -281,6 +281,21 @@ If you want to see the UI debugger:
 npx playwright test --ui
 ```
 
+**Step 6** - Test Categories:
+
+References:
+
+- [Click here for Tags](https://playwright.dev/docs/test-annotations#tag-tests)
+
+- [Click here for DevOps Test Taxomy](https://learn.microsoft.com/en-us/devops/develop/shift-left-make-testing-fast-reliable#devops-test-taxonomy)
+
+Add '@L3' to one of the tests, then:
+
+```powershell
+#Powershell example
+npx playwright test  --project=firefox --grep --% @L3
+```
+
 ---
 
 # Code snippets

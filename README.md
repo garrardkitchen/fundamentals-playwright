@@ -9,6 +9,7 @@
 | [Demo 3](#demo-3) | The Inspector | .NET Core |
 | [Demo 4](#demo-4) | Trace | .NET Core |
 | [Demo 5](#demo-5) | Azure Functions App Linux Consumption provisioned using the AZ Developer CLI (AZD) | NodeJS (Linux consumption Functions App), Razor Pages in ASP.NET Core |
+| [Demo 6](#demo-6) | UI mode & report | NodeJS |
 | [Code Snippets](#code-snippets) | Short code snippets | NodeJS, .NET Core |
 
 

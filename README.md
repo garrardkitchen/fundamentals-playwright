@@ -7,7 +7,7 @@
 | [Demo 1](#demo-1) | Create a basic .NET Core console app and use script generated from OpenAI | .NET Core |
 | [Demo 2](#demo-2) | Record automation | .NET Core |
 | [Demo 3](#demo-3) | The Inspector | .NET Core |
-| [Demo 3](#demo-3) | Trace | .NET Core |
+| [Demo 4](#demo-4) | Trace | .NET Core |
 | [Demo 5](#demo-5) | Azure Functions App Linux Consumption provisioned using the AZ Developer CLI (AZD) | NodeJS (Linux consumption Functions App), Razor Pages in ASP.NET Core |
 | [Code Snippets](#code-snippets) | Short code snippets | NodeJS, .NET Core |
 
@@ -30,7 +30,7 @@ pwsh .\bin\Debug\net6.0\playwright.ps1 install
 
 👆 Note that all engines (chromium, firefox & webkit) are installed
 
-**OpenAI prompt**: "Create me c# script using ms playwright to confirm the word google is on the page having navigated to google.com"
+**Prompt engineering**: "Create me c# script using ms playwright to confirm the word google is on the page having navigated to google.com"
 
 ```c#
 using Microsoft.Playwright;
@@ -54,7 +54,7 @@ class Program
 dotnet run
 ```
 
-**OpenAI prompt**: "I'd like this script to not be headless" 
+**Prompt engineering**: "I'd like this script to not be headless" 
 
 ```c#
 using Microsoft.Playwright;

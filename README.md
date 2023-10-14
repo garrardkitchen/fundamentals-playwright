@@ -196,6 +196,92 @@ azd init --environment "<env-name>" --template https://github.com/garrardkitchen
 azd up
 ```
 
+---
+
+## Demo-6
+
+Here we create a basic TypeScript sample project, use the Firefox engine only and run the tests.
+
+**Step 1** - Create TS project (but do not install all enginees):
+
+```powershell
+npm init playwright@latest -y
+...
+Getting started with writing end-to-end tests with Playwright:
+Initializing project in '.'
+√ Do you want to use TypeScript or JavaScript? · TypeScript
+√ Where to put your end-to-end tests? · tests
+√ Add a GitHub Actions workflow? (y/N) · false
+√ Install Playwright browsers (can be done manually via 'npx playwright install')? (Y/n) · false
+...
+✔ Success! Created a Playwright Test project at C:\Users\****\demo-6
+
+Inside that directory, you can run several commands:
+
+  npx playwright test
+    Runs the end-to-end tests.
+
+  npx playwright test --ui
+    Starts the interactive UI mode.
+
+  npx playwright test --project=chromium
+    Runs the tests only on Desktop Chrome.
+
+  npx playwright test example
+    Runs the tests in a specific file.
+
+  npx playwright test --debug
+    Runs the tests in debug mode.
+
+  npx playwright codegen
+    Auto generate tests with Codegen.
+
+We suggest that you begin by typing:
+
+    npx playwright test
+
+And check out the following files:
+  - .\tests\example.spec.ts - Example end-to-end test
+  - .\tests-examples\demo-todo-app.spec.ts - Demo Todo App end-to-end tests
+  - .\playwright.config.ts - Playwright Test configuration
+```
+
+👆 This will have created a config (demo-6/playwright.config.ts) file with defaults. For example, `testDir`, informing where your tests are located
+
+**Step 2** - Install the firefox engine only:
+
+```powershell
+npx playwright install firefox
+```
+
+Let's not run the tests. this will through up a reports page too. Observe the chromium & webkit tests fail due to us not installing these engines earlier:
+
+**Step 3** - Execute the tests:
+
+```powershell
+npx playwright test --project=firefox
+```
+
+👆 If there are errors, it'll throw up the test report immediately after run
+
+**Step 4** - Show a report:
+
+To see the report:
+
+```powershell
+npx playwright show-report
+```
+
+**Step 5** - Execute the tests in the UI Mode:
+
+If you want to see the UI debugger:
+
+```powershell
+npx playwright test --ui
+```
+
+---
+
 # Code snippets
 
 ## Launch Options

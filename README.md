@@ -10,6 +10,7 @@
 | [Demo 4](#demo-4) | Trace | .NET Core |
 | [Demo 5](#demo-5) | Azure Functions App Linux Consumption provisioned using the AZ Developer CLI (AZD) | NodeJS (Linux consumption Functions App), Razor Pages in ASP.NET Core |
 | [Demo 6](#demo-6) | UI mode & report | NodeJS |
+| [Demo 7](#demo-7) | NUnit | .NET Core |
 | [Code Snippets](#code-snippets) | Short code snippets | NodeJS, .NET Core |
 
 
@@ -295,6 +296,81 @@ Add '@L3' to one of the tests, then:
 #Powershell example
 npx playwright test  --project=firefox --grep --% @L3
 ```
+
+---
+
+## Demo-7
+
+In this demo we will create basic unit tests with test categories.
+
+**Step 1** - Setup
+
+```powershell
+mkdir demo-7
+cd demo-7
+dotnet new nunit
+dotnet add package Microsoft.Playwright.NUnit
+dotnet build
+pwsh bin/Debug/net8.0/playwright.ps1 install firefox
+```
+
+👆 Note that only firefox engines is installed
+
+Copy this into UnitTest1.cs:
+
+```c#
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Microsoft.Playwright;
+using Microsoft.Playwright.NUnit;
+using NUnit.Framework;
+
+[Parallelizable(ParallelScope.Self)]
+[TestFixture]
+public class Tests : PageTest
+{
+    [Test]
+    [Category("L0")]
+    public async Task HomepageHasPlaywrightInTitleAndGetStartedLinkLinkingtoTheIntroPage()
+    {
+        await Page.GotoAsync("https://playwright.dev");
+
+        // Expect a title "to contain" a substring.
+        await Expect(Page).ToHaveTitleAsync(new Regex("Playwright"));
+
+        // create a locator
+        var getStarted = Page.GetByRole(AriaRole.Link, new() { Name = "Get started" });
+
+        // Expect an attribute "to be strictly equal" to the value.
+        await Expect(getStarted).ToHaveAttributeAsync("href", "/docs/intro");
+
+        // Click the get started link.
+        await getStarted.ClickAsync();
+
+        // Expects the URL to contain intro.
+        await Expect(Page).ToHaveURLAsync(new Regex(".*intro"));
+    }
+
+    [Test]
+    [Category("L1")]
+    public async Task L1TestHereJustToBeIgnored()
+    {
+      await Expect(true).ToBe(true);
+    }
+}
+```
+
+```powershell
+dotnet test --filter TestCategory="L0"
+```
+
+To debug test using UI mode:
+
+```powershell
+$env:PWDEBUG=1; dotnet test --filter TestCategory="L0"
+```
+
+👆 Why don't you change a `locator` to see what happens
 
 ---
 

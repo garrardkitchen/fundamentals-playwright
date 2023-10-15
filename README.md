@@ -88,6 +88,8 @@ Open up Powershell Terminal as Administrator, then:
 net localgroup administrators <username> /add
 ```
 
+👆 Replace `<username>` with your username.
+
 Next, open up Windows Terminal as Administrator.  You'll still get prompt but use your non-admin account to sign in.  
 
 Then:
@@ -304,6 +306,18 @@ npx playwright test  --project=firefox --grep --% @L3
 In this demo we will create basic unit tests with test categories.
 
 **Step 1** - Setup
+
+To install the firefox engine, you need administrators rights:
+
+Open up Powershell Terminal as Administrator, then:
+
+```powershell
+net localgroup administrators <username> /add
+```
+
+👆 Replace `<username>` with your username.
+
+Next, open up Windows Terminal as Administrator.  You'll still get prompt but use your non-admin account to sign in.
 
 ```powershell
 mkdir demo-7

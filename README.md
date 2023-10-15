@@ -316,6 +316,8 @@ pwsh bin/Debug/net8.0/playwright.ps1 install firefox
 
 👆 Note that only firefox engines is installed
 
+**Step 2** - Add Unit tests with test category attributes
+
 Copy this into UnitTest1.cs:
 
 ```c#
@@ -360,11 +362,15 @@ public class Tests : PageTest
 }
 ```
 
+**Step 3** - Run tests for L0s
+
 ```powershell
 dotnet test --filter TestCategory="L0"
 ```
 
-To debug test using UI mode:
+**Step 4** - Run tests in UI debugger mode
+
+To debug test using UI debugger mode:
 
 ```powershell
 $env:PWDEBUG=1; dotnet test --filter TestCategory="L0"

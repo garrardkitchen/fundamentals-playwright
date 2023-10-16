@@ -258,7 +258,7 @@ And check out the following files:
 npx playwright install firefox
 ```
 
-Let's not run the tests. this will through up a reports page too. Observe the chromium & webkit tests fail due to us not installing these engines earlier:
+Let's now run the tests. This will throw up a reports page - errors. Observe the chromium & webkit tests fail due to us not installing these engines earlier:
 
 **Step 3** - Execute the tests:
 

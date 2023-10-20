@@ -46,7 +46,7 @@ pwsh .\bin\Debug\net6.0\playwright.ps1 uninstall --all
 
 ## Demo 1
 
-**Introduction**
+**Step 1** - Setup
 
 Create a console app and add package dependencies:
 
@@ -60,6 +60,10 @@ pwsh .\bin\Debug\net6.0\playwright.ps1 install
 ```
 
 👆 Note that all engines (chromium, firefox & webkit) are installed
+
+**Step 2** - headless
+
+ℹ️ open 📂 demo-1 VSCode
 
 **Prompt engineering**: "Create me c# script using ms playwright to confirm the word google is on the page having navigated to google.com"
 
@@ -85,6 +89,8 @@ class Program
 dotnet run
 ```
 
+**Step 3** - headed
+
 **Prompt engineering**: "I'd like this script to not be headless" 
 
 ```c#
@@ -107,7 +113,7 @@ class Program
 
 ## Demo 2
 
-**Record automation**
+**Step 1** - Setup
 
 ```powershell
 mkdir src/demo-2
@@ -116,10 +122,18 @@ dotnet new console -f net6.0
 dotnet add package Microsoft.Playwright --version 1.38.0
 dotnet build
 pwsh .\bin\Debug\net6.0\playwright.ps1 install --with-deps firefox
-pwsh .\bin\Debug\net6.0\playwright.ps1 codegen https://www.google.com/ -o ./Program.cs -b firefox
 ```
 
 👆 Note that only firefox engines is installed
+
+
+**Step 2** - Record automation
+
+ℹ️ open 📂 demo-2 VSCode
+
+```powershell
+pwsh .\bin\Debug\net6.0\playwright.ps1 codegen https://www.google.com/ -o ./Program.cs -b firefox
+```
 
 👆 Must press the **record** button
 
@@ -145,7 +159,7 @@ dotnet run
 
 ## Demo 4
 
-**Trace**
+**Step 1** - Trace
 
 To see the trace
 
@@ -184,6 +198,8 @@ Now enter this to rerecord your navigation:
 dotnet run
 ```
 
+**Step 2** - View trace file
+
 To view the trace:
 
 ```powershell
@@ -202,21 +218,9 @@ In this demo we will create basic unit tests with test categories.
 
 **Step 1** - Setup
 
-To install the firefox engine, you need administrators rights:
-
-Open up Powershell Terminal as Administrator, then:
-
 ```powershell
-net localgroup administrators <username> /add
-```
-
-👆 Replace `<username>` with your username.
-
-Next, open up Windows Terminal as Administrator.  You'll still get prompt but use your non-admin account to sign in.
-
-```powershell
-mkdir demo-7
-cd demo-7
+mkdir demo-5
+cd demo-5
 dotnet new nunit
 dotnet add package Microsoft.Playwright.NUnit
 dotnet build

@@ -214,6 +214,8 @@ Example Trace:
 
 ## Demo-5
 
+ℹ️ open 📂 demo-5 VSCode
+
 In this demo we will create basic unit tests with test categories.
 
 **Step 1** - Setup

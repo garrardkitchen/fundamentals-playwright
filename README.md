@@ -8,12 +8,10 @@
 | [Demo 2](#demo-2) | Record automation | .NET Core |
 | [Demo 3](#demo-3) | The Inspector | .NET Core |
 | [Demo 4](#demo-4) | Trace | .NET Core |
-| [Demo 5](#demo-5) | Azure Functions App Linux Consumption provisioned using the AZ Developer CLI (AZD) | NodeJS (Linux consumption Functions App), Razor Pages in ASP.NET Core |
+| [Demo 5](#demo-5) | NUnit | .NET Core |
 | [Demo 6](#demo-6) | UI mode & report | NodeJS |
-| [Demo 7](#demo-7) | NUnit | .NET Core |
+| [Demo 7](#demo-7) | Azure Functions App Linux Consumption provisioned using the AZ Developer CLI (AZD) | NodeJS (Linux consumption Functions App), Razor Pages in ASP.NET Core |
 | [Code Snippets](#code-snippets) | Short code snippets | NodeJS, .NET Core |
-
-
 
 ---
 
@@ -181,26 +179,99 @@ Example Trace:
 
 ---
 
+## Demo-5
 
-## Demo 5
+In this demo we will create basic unit tests with test categories.
 
-Azure Functions App Linux Consumption provisioned using the AZ Developer CLI (AZD)
+**Step 1** - Setup
 
-Click [here](https://github.com/garrardkitchen/playwright-nodejs-func) to go to GitHub repo and follow instructions.
+To install the firefox engine, you need administrators rights:
 
+Open up Powershell Terminal as Administrator, then:
+
+```powershell
+net localgroup administrators <username> /add
 ```
-# Log in to azd. Only required once per-install.
-azd auth logout # avoid any expired refresh tokens; you'll experience multiple auth challenges and a broken DX otherwise
-azd auth login
 
-# First-time project setup. Initialize a project in the current directory, using this template. 
-azd init --environment "<env-name>" --template https://github.com/garrardkitchen/playwright-nodejs-func
+👆 Replace `<username>` with your username.
 
-# Provision and deploy to Azure
-azd up
+Next, open up Windows Terminal as Administrator.  You'll still get prompt but use your non-admin account to sign in.
+
+```powershell
+mkdir demo-7
+cd demo-7
+dotnet new nunit
+dotnet add package Microsoft.Playwright.NUnit
+dotnet build
+pwsh bin/Debug/net8.0/playwright.ps1 install firefox
 ```
+
+👆 Note that only firefox engines is installed
+
+**Step 2** - Add Unit tests with test category attributes
+
+Copy this into UnitTest1.cs:
+
+```c#
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Microsoft.Playwright;
+using Microsoft.Playwright.NUnit;
+using NUnit.Framework;
+
+[Parallelizable(ParallelScope.Self)]
+[TestFixture]
+public class Tests : PageTest
+{
+    [Test]
+    [Category("L0")]
+    public async Task HomepageHasPlaywrightInTitleAndGetStartedLinkLinkingtoTheIntroPage()
+    {
+        await Page.GotoAsync("https://playwright.dev");
+
+        // Expect a title "to contain" a substring.
+        await Expect(Page).ToHaveTitleAsync(new Regex("Playwright"));
+
+        // create a locator
+        var getStarted = Page.GetByRole(AriaRole.Link, new() { Name = "Get started" });
+
+        // Expect an attribute "to be strictly equal" to the value.
+        await Expect(getStarted).ToHaveAttributeAsync("href", "/docs/intro");
+
+        // Click the get started link.
+        await getStarted.ClickAsync();
+
+        // Expects the URL to contain intro.
+        await Expect(Page).ToHaveURLAsync(new Regex(".*intro"));
+    }
+
+    [Test]
+    [Category("L1")]
+    public async Task L1TestHereJustToBeIgnored()
+    {
+      await Expect(true).ToBe(true);
+    }
+}
+```
+
+**Step 3** - Run tests for L0s
+
+```powershell
+dotnet test --filter TestCategory="L0"
+```
+
+**Step 4** - Run tests in UI debugger mode
+
+To debug test using UI debugger mode:
+
+```powershell
+$env:PWDEBUG=1; dotnet test --filter TestCategory="L0"
+```
+
+👆 Why don't you change a `locator` to see what happens
 
 ---
+
 
 ## Demo-6
 
@@ -299,98 +370,27 @@ Add '@L3' to one of the tests, then:
 npx playwright test  --project=firefox --grep --% @L3
 ```
 
+
+## Demo 7
+
+Azure Functions App Linux Consumption provisioned using the AZ Developer CLI (AZD)
+
+Click [here](https://github.com/garrardkitchen/playwright-nodejs-func) to go to GitHub repo and follow instructions.
+
+```
+# Log in to azd. Only required once per-install.
+azd auth logout # avoid any expired refresh tokens; you'll experience multiple auth challenges and a broken DX otherwise
+azd auth login
+
+# First-time project setup. Initialize a project in the current directory, using this template. 
+azd init --environment "<env-name>" --template https://github.com/garrardkitchen/playwright-nodejs-func
+
+# Provision and deploy to Azure
+azd up
+```
+
 ---
 
-## Demo-7
-
-In this demo we will create basic unit tests with test categories.
-
-**Step 1** - Setup
-
-To install the firefox engine, you need administrators rights:
-
-Open up Powershell Terminal as Administrator, then:
-
-```powershell
-net localgroup administrators <username> /add
-```
-
-👆 Replace `<username>` with your username.
-
-Next, open up Windows Terminal as Administrator.  You'll still get prompt but use your non-admin account to sign in.
-
-```powershell
-mkdir demo-7
-cd demo-7
-dotnet new nunit
-dotnet add package Microsoft.Playwright.NUnit
-dotnet build
-pwsh bin/Debug/net8.0/playwright.ps1 install firefox
-```
-
-👆 Note that only firefox engines is installed
-
-**Step 2** - Add Unit tests with test category attributes
-
-Copy this into UnitTest1.cs:
-
-```c#
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Microsoft.Playwright;
-using Microsoft.Playwright.NUnit;
-using NUnit.Framework;
-
-[Parallelizable(ParallelScope.Self)]
-[TestFixture]
-public class Tests : PageTest
-{
-    [Test]
-    [Category("L0")]
-    public async Task HomepageHasPlaywrightInTitleAndGetStartedLinkLinkingtoTheIntroPage()
-    {
-        await Page.GotoAsync("https://playwright.dev");
-
-        // Expect a title "to contain" a substring.
-        await Expect(Page).ToHaveTitleAsync(new Regex("Playwright"));
-
-        // create a locator
-        var getStarted = Page.GetByRole(AriaRole.Link, new() { Name = "Get started" });
-
-        // Expect an attribute "to be strictly equal" to the value.
-        await Expect(getStarted).ToHaveAttributeAsync("href", "/docs/intro");
-
-        // Click the get started link.
-        await getStarted.ClickAsync();
-
-        // Expects the URL to contain intro.
-        await Expect(Page).ToHaveURLAsync(new Regex(".*intro"));
-    }
-
-    [Test]
-    [Category("L1")]
-    public async Task L1TestHereJustToBeIgnored()
-    {
-      await Expect(true).ToBe(true);
-    }
-}
-```
-
-**Step 3** - Run tests for L0s
-
-```powershell
-dotnet test --filter TestCategory="L0"
-```
-
-**Step 4** - Run tests in UI debugger mode
-
-To debug test using UI debugger mode:
-
-```powershell
-$env:PWDEBUG=1; dotnet test --filter TestCategory="L0"
-```
-
-👆 Why don't you change a `locator` to see what happens
 
 ---
 
@@ -423,4 +423,38 @@ class Program
         Console.WriteLine($"Is 'google' present on the page? {isGooglePresent}");
     }
 }
+```
+
+## React to B2C policy
+
+This is the snippet of code I used to react to the B2C policy asking if I want to stay in.  This is the solution I used to deal with this type of transient failure in the e2e test:
+
+```js
+let body = await this._playwrightFacade.getPage().innerText('body', {timeout: 20000})
+this._log(`body length=${body.length}`)
+
+if (body.length == 0) {
+  throw "Failed to log in as B2C redirection failed or timed out"
+}
+
+// we have content so continue
+let bodyInnerText = body.toLowerCase()
+
+if (bodyInnerText.indexOf('you are signed') > -1) {
+  this._log('Logged in successfully')
+} else {
+  this._log.warn("id=idBtn_Back")
+  this._log.warn("Programmatically decline prompt to stay logged in")
+
+  await this._playwrightFacade.getPage().locator('id=idBtn_Back').click()
+}
+```
+
+## Capture playwright api and browser logs
+
+If there is a transient issue with your solution, I'd recommend forwarding Playwright's logs to STDOUT.
+
+```powershell
+$env:DEBUG="pw:api,pw:browser" 
+func start --debug
 ```

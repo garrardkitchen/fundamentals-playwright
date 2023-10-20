@@ -394,6 +394,7 @@ azd init --environment "<env-name>" --template https://github.com/garrardkitchen
 azd up
 ```
 
+![](.\assets\2023-10-20-10-38-35.png)
 ---
 
 # 🗣️ 

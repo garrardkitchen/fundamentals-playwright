@@ -272,7 +272,7 @@ public class Tests : PageTest
     [Category("L1")]
     public async Task L1TestHereJustToBeIgnored()
     {
-      await Expect(true).ToBe(true);
+      await Task.FromResult<bool>(true);
     }
 }
 ```
@@ -280,7 +280,7 @@ public class Tests : PageTest
 **Step 3** - Run tests for L0s
 
 ```powershell
-dotnet test --filter TestCategory="L0"
+dotnet test --filter TestCategory="L0" -- Playwright.BrowserName=firefox
 ```
 
 **Step 4** - Run tests in UI debugger mode
@@ -288,7 +288,7 @@ dotnet test --filter TestCategory="L0"
 To debug test using UI debugger mode:
 
 ```powershell
-$env:PWDEBUG=1; dotnet test --filter TestCategory="L0"
+$env:PWDEBUG=1; dotnet test --filter TestCategory="L0" -- Playwright.BrowserName=firefox
 ```
 
 👆 Why don't you change a `locator` to see what happens

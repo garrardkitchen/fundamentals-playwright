@@ -272,6 +272,8 @@ $env:PWDEBUG=1; dotnet test --filter TestCategory="L0"
 
 ---
 
+# 🗣️ 
+
 
 ## Demo-6
 
@@ -370,6 +372,9 @@ Add '@L3' to one of the tests, then:
 npx playwright test  --project=firefox --grep --% @L3
 ```
 
+---
+
+# 🗣️ 
 
 ## Demo 7
 
@@ -391,8 +396,7 @@ azd up
 
 ---
 
-
----
+# 🗣️ 
 
 # Code snippets
 

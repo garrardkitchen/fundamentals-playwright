@@ -15,9 +15,40 @@
 
 ---
 
+## PreDemo
+
+Before running through the demos:
+
+**Step 1**
+
+To save a playwright file and to install the playwright dependencies (browser engines), you need administrators rights:
+
+Open up Powershell Terminal as Administrator, then:
+
+```powershell
+net localgroup administrators <username> /add
+```
+
+👆 Replace `<username>` with your username.
+
+Next, open up Windows Terminal as Administrator.  You'll still get prompt but use your non-admin account to sign in.  
+
+
+**Step 2**
+
+Remove all install playwright browser engine installs:
+
+```powershell
+pwsh .\bin\Debug\net6.0\playwright.ps1 uninstall --all
+```
+
+---
+
 ## Demo 1
 
 **Introduction**
+
+Create a console app and add package dependencies:
 
 ```powershell
 mkdir src/demo-1
@@ -77,20 +108,6 @@ class Program
 ## Demo 2
 
 **Record automation**
-
-To save file, you need administrators rights:
-
-Open up Powershell Terminal as Administrator, then:
-
-```powershell
-net localgroup administrators <username> /add
-```
-
-👆 Replace `<username>` with your username.
-
-Next, open up Windows Terminal as Administrator.  You'll still get prompt but use your non-admin account to sign in.  
-
-Then:
 
 ```powershell
 mkdir src/demo-2
